@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div id="container"></div>
+			
+		<!--<script src="https://cdn.bootcss.com/react/0.14.2/react.js" type="text/javascript" charset="utf-8"></script>	
+		<script src="https://cdn.bootcss.com/react/0.14.2/react-dom.js" type="text/javascript" charset="utf-8"></script>	-->
+		
+		<script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			
+			/**
+			 * React 是一个做UI的库， 具体来说是做UI组件的库，专注于做MVC中  V。
+			 * 
+			 * 属性渲染，给什么渲染什么。
+			 */
+			
+			/**
+			 * 选择 React，原因。
+			 * 
+			 * 1. api少，类库易学
+			 * 2. 组件内聚，易于组合
+			 * 3. 原生组件和自定义组件融合渲染
+			 * 4. 状态/属性驱动全局更新，不用关注细节更新
+			 * 5. commonjs 生态圈/工具链完善
+			 */
+			
+			console.log(React);
+			console.log(ReactDOM);
+		
+			var Hello = React.createClass({
+				render: function() {
+					return (<div>Hello {this.props.name}</div>);
+				}
+			});
+			
+			React.render(<Hello name="XIAO YUEYUE HY" />, document.getElementById('container'));
+			
+		</script>
+		
+	</body>
+</html>

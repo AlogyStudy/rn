@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			
+			/**
+			 * jsx
+			 * event
+			 * component
+			 * props/state
+			 * mixin
+			 * form
+			 * refs
+			 * components pai
+			 * top pai
+			 */
+			
+			// 1. jsx
+			// 类似 xml的语法， 用来描述组件树
+			// 注意和html 语法不太一样， 比如必须是驼峰命名，以及属性名和js 关键词冲突， 例如：className，readOnly
+			
+			// 模版语言： {变量}
+			
+			// 可以通过 {...obj} 来批量设置一个对象的键值对到组件的属性，注意顺序
+			var x = 'http://www.linxingzhang.com';
+			var obj = {
+				href: 'http://www.baidu.com',
+				target: '_blank'
+			}
+			
+			var y = <a {...obj} href={x}>linxingzhang.com</a>
+			React.render(y, document.querySelector('.container'));
+			
+		</script>
+		
+	</body>
+</html>

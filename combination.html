@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div class="app"></div>
+		
+		<script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			
+			/**
+			 * 组合 children
+			 * 
+			 * 自定义组件中可以通过this.props.children访问自定义组件的子节点
+			 */
+			
+			var B = React.createClass({
+				render() {
+					return <ul>
+						{React.Children.map(this.props.children, function(c) {
+							return <li>{c}</li>;
+						})}
+					</ul>;
+					// React.Children --> [<a href="#">11</a>, 22]
+				}
+			});
+			
+			React.render(<B>
+				<a href="#">11</a>
+				22
+				</B>, document.querySelector('#app'));
+			
+		</script>
+		
+	</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div class="app"></div>
+		
+		<script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			
+			/**
+			 * 组件
+			 * 
+			 * 可以像是用原生DOM组件一样 使用自定义的组件
+			 */
+			
+			var A = React.createClass({
+				render() {
+					return <a href='#'>a</a>
+				}
+			});
+			
+			var B = React.createClass({
+				render() {
+					return <i><A /> ~~</i>
+				}
+			});
+			
+			React.render(<B />, document.querySelector('.app'));
+		</script>
+		
+	</body>
+</html>
