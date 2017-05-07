@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div class="app"></div>
+		
+		<script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			
+			/**
+			 * STATE
+			 * 
+			 * 组件内部的状态，可以使用 state
+			 * 
+			 * 状态相当于局部变量
+			 */
+			var Timer = React.createClass({
+				getInitialState: function() {
+					return {secondsElapsed: 0};
+				},
+				tick: function() {
+					this.setState({secondsElapsed: this.state.secondsElapsed + 1});
+				},
+				componentDidMount: function() {
+					this.interval = setInterval(this.tick, 1000);
+				},
+				componentWillMount: function() {
+					clearInterval(this.interval);
+				},
+				render: function() {
+					return (
+						<div>Seconds Elapsed: {this.state.secondsElapsed}</div>
+					);
+				}
+			});
+			
+			React.render(<Timer />, document.getElementById('container'));			
+
+			
+		</script>
+		
+	</body>
+</html>

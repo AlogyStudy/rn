@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div class="app"></div>
+		
+		<script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			
+			/**
+			 * REF
+			 * 
+			 * 该功能是为了结合现有非react类库，通过ref/refs可以取得组件实例，进而取得原生节点。
+			 */
+			
+			var Test = React.createClass({
+				componentDidMount() {
+					alert(React.fildDOMNode(this.refs.content).innerHTML);
+				},
+				render() {
+					return (
+						<div>
+							<h3>heaer</h3>
+							<div ref='content'>content</div>
+						</div>
+					);
+				}
+			});
+			
+			React.render(<Text />, document.querySelector('.app'));
+			
+		</script>
+		
+	</body>
+</html>

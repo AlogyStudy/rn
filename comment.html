@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div class="app"></div>
+		
+		<script type="text/javascript">
+			
+			// 评论应用
+			/**
+			 * 1. 评论的列表
+			 * 2. 提交表单
+			 * 3. 后端结合
+			 */
+			
+			/**
+			 * 组件分解
+			 * 
+			 * .顶层 CommentBox
+			 *  ○评论列表 CommentList
+			 *     单条评论 Comment
+			 *  ○评论表单 CommentFrom
+			 */
+			
+			var data = [
+				{author: '作者1', text: '评论11'},
+				{author: '作者2', text: '评论2'}
+			]
+			
+			
+			// 单条评论 Comment
+			var Comment = React.createClass({
+				render() {
+					var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+					return (
+						<div class="comment">
+							<h2 class="commentAuthor">作者:{this.props.author}</h2>
+//							<div>内容: {this.props.children}</div>
+							<div dangerouslySetInnerHTML={{__html: rawMarkup}}></div>	
+						</div>
+					);
+				}
+			});
+			
+			
+			// 评论列表 CommentList
+			var CommentList = React.createClass({
+				render() {
+					var commentNodes = this.props.data.map(function(comment) {
+						return (
+							<Comment author={comment.author}>
+								{comment.text}
+							</Comment>
+						);
+					});
+					return (
+						<div className="commentList">
+							{commentNodes}
+						</div>
+					);
+					
+//					return (
+//						<div class="commentList">
+//							<Comment author={}>评论1 </Comment> 
+//							<Comment author="作者2">评论222 </Comment> 
+//						</div>
+//					);
+				}
+			});
+			
+			// 评论表单 CommentFrom
+			var CommentFrom = React.createClass({
+				getInitalState() {
+					return {
+						name: '',
+						text: ''
+					}
+				},
+				updateFile(filed, ev) {
+					console.log(ev, 'ee');
+					var state = {};
+					state[filed] = e.target.value;
+					this.setState(state);
+				},
+				handleSubmit(ev) {
+					e.preventDefault();
+					// 告知外面组件更新数组
+					this.props.onPost({
+						name: this.state.name,
+						text: this.state.text
+					});
+					// 清空自身状态
+					this.setState({
+						name: '',
+						text: ''
+					});
+				},
+				render() {
+					return (
+						<form className="commentFrom" onSubmit={this.handleSubmit}>
+							<input placeholder="Your name" value={this.state.name} onChange={this.updateFile.bind(this, 'name')} />
+							<input placeholder="Your comment" value={this.state.text} onChange={this.updateFile.bind(this, 'text')} />
+							<input type="submit" value="Post" />
+						</form>
+					);
+				}
+			});
+			
+			
+			// 顶层 CommentBox
+			var CommentBox = React.createClass({
+				loadCommentsFromServer() {
+					var self = this;
+					new Requset.JSON({
+						url: this.props.url,
+						data: {
+							json: JSON.encode({
+								data: [
+									{author: '作者1', text: '11111, ' + Date.now()},
+									{author: '作者2', text: '2222'}
+								]
+							}),
+							delay: 1
+						},
+						onSuccess(res) {
+							self.setState({data: res.data});
+						}
+					}).send();
+				},
+				handlePost(post) {
+					database.push(post);
+					this.loadCommentsFromServer();
+				},
+				getIntialState() {
+					return {data: []}
+				},
+				componetDidMount() { // 已经渲染到dom 中，可以发送ajax请求
+					this.loadCommentsFromServer();
+					setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+				},
+				render() { // 把数据放在比较独立的顶层去获取（推荐做法），其它组件只是负责显示
+					return (
+						<div className="commentBox">
+							<h1>Comments</h1>
+							<CommentList data={this.state.data} /> 
+							<CommentFrom onPost={this.handlePost} />
+						</div>
+					);
+				}
+			});
+			
+			React.render(<CommentBox />, document.querySelector('.app'));
+			
+			// 每个组件把自身功能做好，最终由 固定的组建去沟通协调.  集中管理.
+			// 清晰的单项结构，下层通知上层，上层做逻辑处理，再统一渲染下层。
+			// 下层完全互相解耦
+			
+		</script>
+		
+	</body>
+</html>
+ 

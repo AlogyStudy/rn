@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div class="app"></div>
+		
+		<script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js" type="text/javascript" charset="utf-8"></script>
+	
+	
+		<script type="text/javascript">
+			
+			
+			/**
+			 * mixin是一个普通对象， 通过mixin可以在不同组件间共享代码
+			 */
+			
+			var mixin = {
+				propTypes: {
+					title: React.PropTypes.string,
+				},
+				getDefaultProps() {
+					return {
+						title: 'default'
+					}
+				}
+			};
+			
+			var A = React.createClass({
+				mixins: [mixin],
+				return() {
+					return <i>{this.props.title}</i>;
+				}
+			});
+			
+			var B = React.createClass({
+				mixins: [mixin],
+				return() {
+					return <b>{this.props.title}</b>;
+				}
+			});
+			
+			React.render(<div><B /> 222 <A title="2" /></div>, document.querySelector('.app'));
+			
+			
+			
+		</script>
+		
+	</body>
+</html>

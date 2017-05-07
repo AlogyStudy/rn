@@ -18,6 +18,9 @@
 			 * 通过 this.props 可以获取传递给该组件的属性值，还可以通过定义 getDefaultProps 来指定默认属性值
 			 */
 			var T = React.createClass({
+				propsTypes: {
+					title: React.PropTypes.string
+				},
 				getDefaultProps() {
 					return {
 						title: 'default'

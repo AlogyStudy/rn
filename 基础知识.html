@@ -18,8 +18,8 @@
 			 * mixin
 			 * form
 			 * refs
-			 * components pai
-			 * top pai
+			 * components API
+			 * TOP API （顶层的api）
 			 */
 			
 			// 1. jsx
@@ -37,6 +37,41 @@
 			
 			var y = <a {...obj} href={x}>linxingzhang.com</a>
 			React.render(y, document.querySelector('.container'));
+			
+			
+			/**
+			 * React API
+			 * 
+			 * React.createClass(); 定义组件时允许传入的配置
+			 * getDefalutProps 得到默认属性对象
+			 * propTypes 属性检测规则
+			 * mixins 组件间公用方法
+			 * React.createClass定义时允许传入的函数，会在特定生命周期内调用 
+			 * 
+			 * 在不同阶段进行调用，React是在流水线式的渲染。
+			 * 【初次创建组件时调用】
+			 * getInitialState 得到初始化状态对象
+			 * render 返回组件树，必须设置
+			 * componecntDidMount 渲染到树中是调用，只在客户端调用，可用于获取原生节点
+			 * 
+			 * 【组件的属性值改变时调用】（组件已经渲染到浏览器中，组件属性值被改变）
+			 * componentWillReceiveProps 属性改变调用
+			 * showldComponentUpdate 判断是否需要重新渲染
+			 * render 返回组件树，必须设置
+			 * componentDidUpdate 渲染到DOM树中时调用，可用于获取原生节点
+			 * 
+			 * 最后是： componentWillUnmount组件从dom销毁前调用
+			 */
+			
+			
+			/**
+			 * TOP API
+			 * 
+			 *  React.createClass(); // 创建组件类
+			 *  React.findDOMNode(); // 从组件实例获取 dom 根节点
+			 *  React.render(); // 渲染组件到dom
+			 *  React.Children.*  操作  map/forEach children 工具类
+			 */
 			
 		</script>
 		

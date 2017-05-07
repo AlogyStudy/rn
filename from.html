@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		
+		<div class="app"></div>
+		
+		<script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			
+			/**
+			 * 	FROM 
+			 * 和 html的不同点
+			 * 
+			 * value/checked 属性设置后，用户输入无效。 （如果设置了value属性，那么改组件变为受控组件，用户无法输入，除非程序改变value属性，可以通过监听onChange事件结合state来改变input的值）
+			 * textarea属性可以是数组，不建议使用option的selected属性
+			 * input/textarea的onChange用户每次输入都会触发(即使不失去焦点)
+			 * radio/checkbox点击后触发onChange  
+			 * 
+			 */
+			
+			var Test = React.createClass({
+				getInitialState() {
+					return {
+						value: 'xiaoyueyue'
+					}
+				},
+				onChange(e) {
+					this.setState({
+						value: 'ct'
+					});
+				},
+				render() {
+					return <input value={this.state.value} onChange={this.onChange} />
+				}
+			});
+			
+			React.render(<Test />, document.querySelector('.app'));
+			
+		</script>
+		
+	</body>
+</html>
