@@ -41,5 +41,30 @@ iOS中的UIView，Android中的android.view或是网页中<div> ,它是所有组
 ## flex
 
 
+## TextInput
 
-## 
+TextInput  类似 iOS中的 UITextField
+TextInput 继承自 View
+
+value
+onChangeText
+keyboardType  键盘类型
+```
+enum('default', 'ascii-capable', 'url', 'number-pad');
+```
+password true 为 密码框 (多行文本属性设置上，密码失效)
+multiline true 多行文本
+placeholder  占位
+
+clearButtonMode 清楚按钮出现在文本左侧的时机
+```
+enmu('never', 'while-editing', 'unless-editing', 'always');
+
+while-editing 编辑的时候出现
+always 一直都出现
+never 永远不出现
+```
+
+
+
+

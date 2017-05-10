@@ -1,0 +1,36 @@
+{
+	"error": 0,
+	"data": [
+		{
+			"icon": "tianmao",
+			"title": "天猫"
+		},{
+			"icon": "juhuasuan",
+			"title": "聚划算"
+		},{
+			"icon": "tianmaoguoji",
+			"title": "天猫国际"
+		},{
+			"icon": "waimai",
+			"title": "外卖"
+		},{
+			"icon": "tianmaochaoshi",
+			"title": "天猫超市"
+		},{
+			"icon": "chongzhi",
+			"title": "充值"
+		},{
+			"icon": "feizhulvxing",
+			"title": "飞猪旅行"
+		},{
+			"icon": "lingjingbi",
+			"title": "领金币"
+		},{
+			"icon": "paimai",
+			"title": "拍卖"
+		},{
+			"icon": "fenlei",
+			"title": "分类"
+		}
+	]
+}
