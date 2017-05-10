@@ -1,5 +1,6 @@
 
 ## index.xx.js
+
 ```
 import {
 	AppRegist, // 注册
@@ -40,5 +41,43 @@ iOS中的UIView，Android中的android.view或是网页中<div> ,它是所有组
 
 ## flex
 
+flex设置父级，影响子级。
+{flex: 1} 占满父控件
 
+改变主轴方向：`flexDireaction` ： `row`, `cloumn`
+
+主轴对齐方式： `justifyContent`: 'space-between'
+
+侧轴对齐方式： `alignItems` : `flex-end`, `stretch`, `center`
+
+是否换行：  `flexWrap` 
+
+
+
+## 屏幕分辨率
+
+Demesions 模块
+
+宽度：Demesions.get('window').width
+高度：Demesions.get('window').height
+分辨率：Demesions.get('window').scale
+
+{
+	flex: 1,
+	justrifyContent: 'center',
+	alignItems: 'center'
+}
+
+
+## Image组件
+
+1. 从项目中加载：require
+2. 从app中： require，和 uri
+3. 从网络： uri
+
+显示方式：
+
+1. Image.resezeMode.cover
+2. Image.resezeMode.contain
+3. Image.resezeMode.stetch
 
