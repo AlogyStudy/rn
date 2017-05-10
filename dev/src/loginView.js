@@ -4,7 +4,8 @@ import {
   Text,
   View,
   Image,
-  TextInput
+  TextInput,
+  Touchable
 } from 'react-native';
 
 
@@ -96,16 +97,18 @@ const styles = StyleSheet.create({
 	otherLogin: {
 		flexDirection: 'row',
 		width: width - 40,
+		alignItems: 'center',	
 		position: 'absolute',
 		bottom: 40
 	},
 	otherTxt: {
-		lineHeight: 26,
+		lineHeight: 18,
 		marginLeft: 10
 	},
 	otherImg: {
 		width: 30,
 		height: 30,
-		marginLeft: 10
+		marginLeft: 10,
+		borderRadius: 25
 	}
 });

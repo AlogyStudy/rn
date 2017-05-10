@@ -137,7 +137,7 @@ AppRegistry.registerComponent('rn', () => rnTextInput);*/
 // QQ登录界面 ********************************************************
 
 
-import Login from './src/loginView';
+/*import Login from './src/loginView';
 
 export default class rnQQView extends Component {
 	render() {
@@ -151,4 +151,62 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('rn', () => rnQQView);
+*/
+
+// Touchable *******************************************
+
+/*import Touchable from './src/Touchable';
+
+export default class rnTouchable extends Component {
+	render() {
+		return (
+			<Touchable />
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+});
+
+AppRegistry.registerComponent('rn', () => rnTouchable);
+
+*/
+
+
+// Life Cycle *********************************************
+
+/*
+import LifeCycle from './src/LifeCycle';
+
+export default class rnLifeCycle extends Component {
+	render() {
+		return (
+			<LifeCycle age={20} />
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+});
+
+AppRegistry.registerComponent('rn', () => rnLifeCycle);
+*/
+
+
+// rnScrollView  ***************************************
+
+import ScrollView from './src/ScrollView';
+
+export default class rnScrollView extends Component {
+	render() {
+		return (
+			<ScrollView />
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+});
+
+AppRegistry.registerComponent('rn', () => rnScrollView);
 
