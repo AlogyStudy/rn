@@ -195,7 +195,7 @@ AppRegistry.registerComponent('rn', () => rnLifeCycle);
 
 // rnScrollView  ***************************************
 
-import ScrollView from './src/ScrollView';
+/*import ScrollView from './src/ScrollView';
 
 export default class rnScrollView extends Component {
 	render() {
@@ -209,4 +209,25 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('rn', () => rnScrollView);
+*/
+
+
+// scrollModule *********************************************
+
+import ScrollModule from './src/ScrollModule';
+
+export default class rnScrollModule extends Component {
+	render() {
+		return (
+			<ScrollModule />
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+});
+
+AppRegistry.registerComponent('rn', () => rnScrollModule);
+
+
 
