@@ -306,5 +306,394 @@ export default class rn extends Component {
 	}
 }
 ```
+-----
+
+**焦点图**
+
+```
+import React, {
+	Component
+} from 'react';
+import {
+	StyleSheet,
+	Text,
+	View,
+	Image,
+	TextInput,
+	Touchable,
+	ScrollView
+} from 'react-native';
+
+let Dimensions = require('Dimensions');
+let {
+	width
+} = Dimensions.get('window');
+
+// 引入计时器
+let TimerMixin = require('react-timer-mixin');
+
+// 引入JSON数据
+let ImageData = require('./mork/ImageData.json');
+
+export default React.createClass({
+	// 注册计时器
+	mixins: [TimerMixin],
+
+	// 设置固定值
+	getDefaultProps() {
+		return {
+			// 设置timer
+			timers: 2500
+		}
+	},
+
+	// 设置可变的和初始值
+	getInitialState() {
+		return {
+			// 当前页码
+			idx: 0
+		}
+	},
+
+	// 图片
+	renderAllImage() {
+		let allImg = [];
+		let allData = ImageData.data;
+		let colors = ['skyblue', 'pink', 'cyan', 'tan', 'tomato'];
+		
+		let ArrDataUrl = [];
+		for (let j=0; j<allData.length; j++) {
+			ArrDataUrl.push('./../img/scrollImg/' + allData[j]['img'] + '.png');
+		}
+		
+		for (let i=0; i<allData.length; i++) {
+			let imgItem = allData[i];
+//			let ctImg = './../img/scrollImg/' + imgItem['img'] + '.png';
+//			source={require(ArrDataUrl[i])}
+			allImg.push(
+					<View key={i} style={{backgroundColor: colors[i], width: width, height: 120}}>
+						<Image style={{width: width, height: 120}} />
+						<Text>{i}</Text>
+					</View>
+				);
+		}
+		return allImg;
+	},
+
+	// 小圆点
+	renderPageCircle() {
+		let allCircle = [];	
+		let allData = ImageData.data;
+		let styls;
+
+		for (let i=0; i<allData.length; i++) {
+			styls =  i == this.state.idx ? {color: 'orange'} : {color: '#fff'};
+			allCircle.push(
+				<Text key={i} style={[{fontSize: 25}, styls]}>&bull;</Text>
+			);	
+		}
+
+		return allCircle;
+	},
+
+	// 一帧滚动结束
+	onAnimationEnd(ev) {
+		// 1. 水平方向的偏移量
+		let offSetX = ev.nativeEvent.contentOffset.x;
+		console.log(offSetX, 'offSetX');
+		// 2. 求出当前页数
+		let currentPage = Math.floor(offSetX / width);
+
+		// 更新状态机，重新绘制UI
+		this.setState({
+			idx: currentPage
+		});
+	},
+	
+	// 开启定时器
+	startTimer() {
+		// 添加定时器
+		this.setInterval(this.timers, this.props.timers);
+	},
+	
+	timers() {
+		// 获取 ScrollView DOM 对象
+		let scrollView = this.refs.scrollView;
+		
+		// 设置圆点
+		let activePage = 0;
+		let imgCount = ImageData.data.length; // 图片总数
+		// 置前判断
+		if ((this.state.idx+1) >= imgCount) {
+			activePage = 0;
+		} else {
+			activePage = this.state.idx+1;
+		}
+		
+		// 重新设置
+		this.setState({
+			idx: activePage		
+		});
+		
+		// 图片滚动
+		let offsetX = activePage * width;
+		scrollView.scrollResponderScrollTo({x: offsetX, y: 0 , animated: true});
+		
+	},
+	
+	// 调用开始拖拽
+	onScrollBeginDrag() {
+		// 停止定时器
+		this.clearInterval(this.timer);
+	},
+	
+	// 停止拖拽
+	onScrollEndDrag() {
+		// 开启定时器
+		this.timer = this.startTimer();
+	},
+	
+	// 实现定时器
+	componentDidMount() {
+		// 开启定时器
+		this.timer = this.startTimer();
+	},
+	
+	// 渲染
+	render() {
+			return (<View style={styles.container}>
+					<ScrollView 
+						ref="scrollView"
+						horizontal={true}
+						showsHorizontalScrollIndicator={false}
+						pagingEnabled={true}		
+						// 一帧滚动结束
+						onMomentumScrollEnd={(ev) => this.onAnimationEnd(ev)}
+						// 开始拖拽
+						onScrollBeginDrag={this.onScrollBeginDrag}	
+						// 停止拖拽
+						onScrollEndDrag={this.onScrollEndDrag}
+					>
+					{this.renderAllImage()}
+					</ScrollView>
+					{/* 小圆点 */}
+					<View style={styles.pageView}>{this.renderPageCircle()}</View>
+				</View>);
+	}
+});
+
+const styles = StyleSheet.create({
+	container: {
+		marginTop: 20
+	},
+	pageView: {
+		flexDirection: 'row',
+		backgroundColor: 'tan',
+		// 定位
+		position: 'absolute',
+		alignItems: 'center',
+		bottom: 0,
+		width, width,
+		height: 25,
+		backgroundColor: 'rgba(0, 0, 0, 0.1)',
+	}
+});
+```
+
+## ListView
+
+OC中的  UITableView
+
+1. 设置数据源 （数组），通过ListView.DataSource();数据源 (通过diff算法)
+2. 使用数据源实例化一个ListView组件，定义renderRow回调函数 （这个函数会接受数组中的每个数组作为参数，并返回一个可渲染的组件）
 
 
+属性：
+ListView继承自ScrollView
+
+`dataSource`： 设置数据源
+`renderRow()`: 渲染数据
+
+```
+// 导入JSON数据 
+let Wine = require('./mork/Wine.json');
+
+export default React.createClass({
+	// 设置初始值
+	getInitialState() {
+		// 设置DataSource  // 在什么条件下创建数据源
+		let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2}); // sort	
+		// 返回数据, 塞值
+		return {
+			dataSource: ds.cloneWithRows(Wine) // cloneWithRows 放置数组		
+		}
+	},
+	
+	// 渲染row，调用回调
+	renderRow(rowData, sectionID, rowID, highlinghtRow) {
+		console.log(rowData, sectionID, rowID, highlinghtRow);
+		return (
+			<TouchableOpacity activeOpacit={0.5}>	
+				<View style={styles.cellViewStyle}>
+					<Image source={{uri: rowData.image}} style={[styles.leftViewStyle ,{width: 60, height: 60, backgroundColor: 'cyan'}]} />
+					<View style={styles.cellViewText}>
+						<Text style={styles.cellViewTextTop}>{rowData.name}</Text>
+						<Text style={styles.cellViewTextBottom}>￥{rowData.money}</Text>
+					</View>
+				</View>
+			</TouchableOpacity>)
+	},
+	
+	// 渲染
+	render() {
+		return (<ListView
+				// 设置数据源
+				dataSource={this.state.dataSource}
+				// 渲染row，调用回调 , 没有手动调用，会自动传入4个参数。 分别为：rowData (一条数据), sectionID（分组ID）, rowID（行ID）, highlinghtRow（标记是否高亮选中）
+				renderRow={this.renderRow}
+			/>);
+	}
+});
+```
+
+
+> 在`getInitalState` 中设置初始值
+```
+// 设置DataSource 
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2}); // sort	
+// 返回数据, 塞值
+return {
+	dataSource: ds.cloneWithRows(Wine) // cloneWithRows 放置数组		
+}
+```
+> 在自定义属性中调用
+```
+<ListView
+// 设置数据源
+dataSource={this.state.dataSource}
+// 渲染row，调用回调 , 没有手动调用，会自动传入4个参数。 分别为：rowData (一条数据), sectionID（分组ID）, rowID（行ID）, highlinghtRow（标记是否高亮选中）
+renderRow={this.renderRow}
+/>
+```
+
+> 在 `renderRow()` 回调函数 中渲染视图
+
+
+**九宫格**
+
+对ListView的操作时纵向的，如果是横向的，则需要设置ListView 的ContentContainerStyle属性，添加flexDirection: 'row',
+让多个ListView在同一行显示，而且通过flexWrap: 'warp'进行换行。
+
+
+```
+let Dimensions = require('Dimensions');
+let {
+	width
+} = Dimensions.get('window');
+
+let shareData = require('./mork/shareData.json');
+
+// 常量设置
+let clos = 3; // 显示几行
+let cellWH = 100; // icon 宽高
+let vMargin = (width - cellWH * clos) / (clos + 1);
+let vHmargin = 25;
+
+
+export default class Share extends Component {
+	// 设置初始值
+	constructor(props) {
+		super(props);
+		
+		// 在什么条件下创建数据源
+		let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2});
+		
+		// 设置值
+		this.state = {
+			dataSource: ds.cloneWithRows(shareData.data)
+		}
+	}
+	
+	// 渲染
+	renderRow(rowData, sectionID, rowID, highlinghtRow) {
+		console.log(rowData);
+		return (
+			<TouchableOpacity activeOpacity={0.5} onPress={this._onPressButton}>
+				<View style={styles.shareViewWrap}>
+					<Image source={{uri: rowData.icon}} style={{width: 50, height: 50, backgroundColor: 'tomato'}} />
+					<Text style={styles.titleView}>{rowData.title}</Text>
+				</View>
+			</TouchableOpacity>
+		);
+	}
+	
+	// 执行跳转
+	_onPressButton() {
+		alert(123123);
+	}
+	
+	render() {
+		return (
+			<ListView
+				contentContainerStyle={styles.container}
+				dataSource={this.state.dataSource}
+				renderRow={this.renderRow}
+			/>
+		);
+	}
+}
+```
+
+
+## 吸顶效果
+
+实现滚动时每个section header会吸顶?
+一个方法，三个属性。
+`cloneWithRowsAndSecions()`: 将dataBlob(object), sectionIDs(array), rowIDs(array) 三个值传进去.
+
+`dataBlob`: 包含ListView所需的所有数据（section header 和 rows）， 在ListView渲染数据时，使用getSectionData 和 getRowData来渲染每一行数据。
+dataBlob的key值包含sectionID + rowID  (一个二维数组)
+`sectionIDs`: 用于标识每组section
+`rowIDs`: 描述每个section里的每行数据的位置及是否要渲染。
+
+> 模拟对应的数据结构
+
+```
+var dataBlol = {
+	'sectionID1': { ...section1 data},
+	'sectionID1:rowID1': { ...row1 data},
+	'sectionID1:rowID2': { ...row2 data},
+	'sectionID2': { ...section2 data},
+	'sectionID2:rowID1': { ...row1 data},
+	'sectionID2:rowID2': { ...row2 data},
+}
+
+var sectionIDs = ['sectionID1', 'sectionID2', ...];
+
+var rowIDs = [['rowID1', 'rowID2'], ['rowID1', 'rowID2'], ...];
+```
+
+> 使用方式
+
+```
+var getSectionData = (dataBlob, sctionID) =>  {
+	return dataBlob[sectionID];
+}
+
+var getRowData = (dataBlob, sectionID, rowID) => {
+	return dataBlob[sectionID + ':' + rowID];
+}
+
+return {
+	loaded: false,
+	dataSource: new ListView.DataSource({
+		getSectionData: getSectionData,
+		getRowData: getRowData,
+		rowHasChanged: (r1, r2) => r1 != r2,
+		sectionHaderHasChanged: (s1, s2) => s1 != s2
+	});
+}
+```
+ 
+ 
+ 

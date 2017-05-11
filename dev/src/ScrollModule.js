@@ -27,6 +27,14 @@ export default React.createClass({
 	// 注册计时器
 	mixins: [TimerMixin],
 
+	// 设置固定值
+	getDefaultProps() {
+		return {
+			// 设置timer
+			timers: 2500
+		}
+	},
+
 	// 设置可变的和初始值
 	getInitialState() {
 		return {
@@ -89,15 +97,70 @@ export default React.createClass({
 			idx: currentPage
 		});
 	},
-
-	render(){
+	
+	// 开启定时器
+	startTimer() {
+		// 添加定时器
+		this.setInterval(this.timers, this.props.timers);
+	},
+	
+	timers() {
+		// 获取 ScrollView DOM 对象
+		let scrollView = this.refs.scrollView;
+		
+		// 设置圆点
+		let activePage = 0;
+		let imgCount = ImageData.data.length; // 图片总数
+		// 置前判断
+		if ((this.state.idx+1) >= imgCount) {
+			activePage = 0;
+		} else {
+			activePage = this.state.idx+1;
+		}
+		
+		// 重新设置
+		this.setState({
+			idx: activePage		
+		});
+		
+		// 图片滚动
+		let offsetX = activePage * width;
+		scrollView.scrollResponderScrollTo({x: offsetX, y: 0 , animated: true});
+		
+	},
+	
+	// 调用开始拖拽
+	onScrollBeginDrag() {
+		// 停止定时器
+		this.clearInterval(this.timer);
+	},
+	
+	// 停止拖拽
+	onScrollEndDrag() {
+		// 开启定时器
+		this.timer = this.startTimer();
+	},
+	
+	// 实现定时器
+	componentDidMount() {
+		// 开启定时器
+		this.timer = this.startTimer();
+	},
+	
+	// 渲染
+	render() {
 			return (<View style={styles.container}>
 					<ScrollView 
+						ref="scrollView"
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
 						pagingEnabled={true}		
 						// 一帧滚动结束
 						onMomentumScrollEnd={(ev) => this.onAnimationEnd(ev)}
+						// 开始拖拽
+						onScrollBeginDrag={this.onScrollBeginDrag}	
+						// 停止拖拽
+						onScrollEndDrag={this.onScrollEndDrag}
 					>
 					{this.renderAllImage()}
 					</ScrollView>

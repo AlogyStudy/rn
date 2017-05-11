@@ -33,6 +33,7 @@ AppRegistry.registerComponent('rn', () => rn);*/
 
 
 
+
 // Image **********************************************************************************************
 
 // 导入json数据
@@ -101,6 +102,8 @@ const styles = StyleSheet.create({
 AppRegistry.registerComponent('rn', () => rn);*/
 
 
+
+
 // TextInput ********************************************************
 
 // TextInput  类似 iOS中的 UITextField
@@ -134,6 +137,8 @@ AppRegistry.registerComponent('rn', () => rnTextInput);*/
 
 
 
+
+
 // QQ登录界面 ********************************************************
 
 
@@ -152,6 +157,9 @@ const styles = StyleSheet.create({
 
 AppRegistry.registerComponent('rn', () => rnQQView);
 */
+
+
+
 
 // Touchable *******************************************
 
@@ -173,7 +181,8 @@ AppRegistry.registerComponent('rn', () => rnTouchable);
 */
 
 
-// Life Cycle *********************************************
+
+// Life Cycle 生命周期 *********************************************
 
 /*
 import LifeCycle from './src/LifeCycle';
@@ -193,7 +202,7 @@ AppRegistry.registerComponent('rn', () => rnLifeCycle);
 */
 
 
-// rnScrollView  ***************************************
+// ScrollView  ***************************************
 
 /*import ScrollView from './src/ScrollView';
 
@@ -214,7 +223,7 @@ AppRegistry.registerComponent('rn', () => rnScrollView);
 
 // scrollModule *********************************************
 
-import ScrollModule from './src/ScrollModule';
+/*import ScrollModule from './src/ScrollModule';
 
 export default class rnScrollModule extends Component {
 	render() {
@@ -227,7 +236,65 @@ export default class rnScrollModule extends Component {
 const styles = StyleSheet.create({
 });
 
-AppRegistry.registerComponent('rn', () => rnScrollModule);
+AppRegistry.registerComponent('rn', () => rnScrollModule);*/
 
 
+
+
+// ListView *********************************************
+
+/*import ListView from './src/ListView';
+
+export default class rnListView extends Component {
+	render() {
+		return (
+			<ListView />
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+});
+
+AppRegistry.registerComponent('rn', () => rnListView);*/
+
+
+
+
+// 九宫格  *********************************************
+
+/*import Share from './src/Share';
+
+export default class rnShare extends Component {
+	render() {
+		return (
+			<Share />
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+});
+
+AppRegistry.registerComponent('rn', () => rnShare);*/
+
+
+
+
+// 吸顶效果  *********************************************
+
+import Ceiling from './src/Ceiling';
+
+export default class rnCeiling extends Component {
+	render() {
+		return (
+			<Ceiling />
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+});
+
+AppRegistry.registerComponent('rn', () => rnCeiling);
 
