@@ -20,11 +20,10 @@ let {
 let TimerMixin = require('react-timer-mixin');
 
 // 引入JSON数据
-let ImageData = require('./mork.ImageData.json');
-let Dimensions = require('Dimensions');
-let {width, height} = Demesions.get('window');
+let ImageData = require('./mork/ImageData.json');
+const PROJECTDIR = 'D:/xampp/htdocs/rn/dev/';
 
-export default React.careteClass({
+export default React.createClass({
 	// 注册计时器
 	mixins: [TimerMixin],
 
@@ -39,15 +38,25 @@ export default React.careteClass({
 	// 图片
 	renderAllImage() {
 		let allImg = [];
-
 		let allData = ImageData.data;
+		let colors = ['skyblue', 'pink', 'cyan', 'tan', 'tomato'];
+		
+		let ArrDataUrl = [];
+		for (let j=0; j<allData.length; j++) {
+			ArrDataUrl.push('./../img/scrollImg/' + allData[j]['img'] + '.png');
+		}
+		
 		for (let i=0; i<allData.length; i++) {
 			let imgItem = allData[i];
+//			let ctImg = './../img/scrollImg/' + imgItem['img'] + '.png';
+//			source={require(ArrDataUrl[i])}
 			allImg.push(
-					<Image key={i} sroce={{uri: imgItem[i].img}} style={{width: width, height: 120}} />
+					<View key={i} style={{backgroundColor: colors[i], width: width, height: 120}}>
+						<Image style={{width: width, height: 120}} />
+						<Text>{i}</Text>
+					</View>
 				);
 		}
-
 		return allImg;
 	},
 
@@ -60,37 +69,40 @@ export default React.careteClass({
 		for (let i=0; i<allData.length; i++) {
 			styls =  i == this.state.idx ? {color: 'orange'} : {color: '#fff'};
 			allCircle.push(
-					<View key={i} style={[{fongSize: 25}, styls]}>&bull;</View>
+				<Text key={i} style={[{fontSize: 25}, styls]}>&bull;</Text>
 			);	
 		}
 
-		return allCirecla;
+		return allCircle;
 	},
 
 	// 一帧滚动结束
 	onAnimationEnd(ev) {
 		// 1. 水平方向的偏移量
-		let offSetX = e.netiveEvnent.contentOffset.x;
+		let offSetX = ev.nativeEvent.contentOffset.x;
+		console.log(offSetX, 'offSetX');
 		// 2. 求出当前页数
-		let currentPage = Math.floor(offSetX / window);
+		let currentPage = Math.floor(offSetX / width);
 
 		// 更新状态机，重新绘制UI
-		this.setDtate({
-			idx: currentpage
+		this.setState({
+			idx: currentPage
 		});
 	},
 
-	render: (){
-			retunr (<View style={style.container}>
+	render(){
+			return (<View style={styles.container}>
 					<ScrollView 
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
 						pagingEnabled={true}		
 						// 一帧滚动结束
-						onMomentumScrollEnd={this.onAnimationEnd()}
-					>{this.renderAllImage()}</ScrollView>
+						onMomentumScrollEnd={(ev) => this.onAnimationEnd(ev)}
+					>
+					{this.renderAllImage()}
+					</ScrollView>
 					{/* 小圆点 */}
-					<View style={styles.pageView}>{(ev) => this.renderPageCircle(ev)}</View>
+					<View style={styles.pageView}>{this.renderPageCircle()}</View>
 				</View>);
 	}
 });
@@ -100,14 +112,14 @@ const styles = StyleSheet.create({
 		marginTop: 20
 	},
 	pageView: {
-		flexDireaction: 'row',
-		alignItmes: 'center',
+		flexDirection: 'row',
+		backgroundColor: 'tan',
 		// 定位
 		position: 'absolute',
+		alignItems: 'center',
 		bottom: 0,
 		width, width,
 		height: 25,
-		marginLeft: 8,
 		backgroundColor: 'rgba(0, 0, 0, 0.1)',
 	}
 });
