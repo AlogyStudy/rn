@@ -722,5 +722,274 @@ return {
 }
 ```
  
+-----
+
+**吸顶效果**
+
+```
+let Dimensions = require('Dimensions');
+let {
+	width
+} = Dimensions.get('window');
+
+let Car = require('./mork/Car.json');
+
+export default class Share extends Component {
+	constructor(props) {
+		super(props);
+		
+		let getSectionData = (dataBlob, sectionID) => {
+			return dataBlob[sectionID];	
+		};
+		let getRowData = (dataBlob, sectionID, rowID) => {
+			return dataBlob[sectionID + ':' + rowID];
+		};
+		let ds = new ListView.DataSource({
+			getSectionData: getSectionData, // 获取组中的数据
+			getRowData: getRowData, // 获取行中的数据
+			rowHasChanged: (r1, r2) => r1 != r2,
+			sectionHeaderHasChanged: (s1, s2) => s1 != s2
+		});
+		this.state = {
+			dataSource: ds			
+		};
+	}
+	
+	// 加载数据，处理数据需要的格式
+	loadDataFromJson() {
+		// 获取JSON数据
+		let JSONData = Car.data;
+		let dataBlob = {}, sectionIDs = [], rowIDs = [],　cars = [];
+		
+		// 处理数据格式
+		for (let i=0; i<JSONData.length; i++) {
+			// 把组号放置sectionIDs数组中
+			sectionIDs.push(i);
+			// 设置 组的dataBlob对象的中
+			dataBlob[i] = JSONData[i].title;
+			
+			// 取出所有的车数组
+			cars = JSONData[i].cars;
+			rowIDs[i] = [];
+			
+			for (let j=0; j<cars.length; j++) {
+				// 把行号放入rowIDs
+				rowIDs[i].push(j);
+				dataBlob[i + ':' + j] = cars[j];
+			}
+		}
+		
+		// 更新状态
+		this.setState({
+			dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
+		});
+	}
+	
+	// 每一行数据
+	_renderRow(rowData) {
+		return (
+			<TouchableOpacity activeOpacity={0.5}>
+				<View style={styles.rowStyle}>
+					<Image source={{uri: rowData.icon}} style={{width: 40, height: 40, backgroundColor: 'tomato', marginLeft: 10, marginRight: 10}} />
+					<Text style={{lineHeight: 26}}>{rowData.name}</Text>
+				</View>
+			</TouchableOpacity>
+		);
+	}
+	
+	//　渲染组
+	_renderSectionHeader(setionData, sectionID){
+		return (
+			<View style={styles.setionViewStyle}>
+				<Text style={{lineHeight: 26, color: 'tomato'}}>{setionData}, {sectionID}</Text>
+			</View>
+		);
+	}
+	
+	// 设置渲染 ：数据请求　或者异步操作（定时器）
+	componentDidMount() {
+		//　调用JSON数据
+		this.loadDataFromJson();
+	}
+	
+	render() {
+		return (
+			<View style={styles.outerViewStyle}>
+				{/* 头部 */}
+				<View style={styles.headerViewStyle}><Text>SeeMyGo品牌</Text></View>
+				{/* 列表渲染 */}
+				<ListView
+					dataSource={this.state.dataSource}
+					renderRow={this._renderRow}
+					renderSectionHeader={this._renderSectionHeader}
+				/>
+			</View>
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+	outerViewStyle: {
+		flex: 1,
+	},
+	headerViewStyle: {
+		height: 40,
+		backgroundColor: '#eee',
+		
+		// 居中
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	rowStyle: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		borderBottomColor: '#e8e8e8',
+		borderBottomWidth: 0.5,
+		padding: 10
+	},
+	setionViewStyle: {
+		width: width,
+		height: 30,
+		backgroundColor: '#ddd'
+	}
+});
+```
+
+
+## TabBarIOS
+
+TabBar和TabBarIOS.Item
+
+**TabBar属性**
+
+View中的所有属性都可以被继承
+`barTintColor`  color　设置tab条的背景的颜色
+`tintColor` color 设置tab选中图标的颜色
+`translucent` bool 设置Tab栏是不是透明的效果
+
+
+**TabBarIOS.Item属性**
+
+`badge` number 在图标的右上方显示小红色气泡，显示信息
+`icon` Image.propTypes.source Tab按钮自定义的图标，　如果systemicon属性被定义了，那么该属性会被忽略
+`onPress` function 当Tab按钮被选中的时候进行回调，可以设置selected={true}来设置组件被选中
+`selected` bool 该属性标志子页面是否可见。 true　被选中
+`selectIcon` Image.propTypes.srouce 设置当前选择的图标按钮.
+`style` 设置样式风格，继承View的样式各种风格
+`title`　string 图标底下的标题
+`systemIcon`　系统图标 　enum() 使用了系统就不可以自定义，会被这些图标覆盖。
+
+
+1. TabBar 和　TabBarIOS.Item　基本结构
+2. 处理点击效果
+
+**TabBarIOS实现案例效果**
+
+```
+let Dimensions = require('Dimensions');
+let {
+	width
+} = Dimensions.get('window');
+
+
+export default class Share extends Component {
+	
+	// 设置初始值
+	constructor(props) {
+		super(props);
+		
+		this.state = {
+			// 选中的TabBarItem
+			selectdTabBarItem: 'home'
+		}
+	}
+	
+	renderView() {
+		
+	}
+	
+	render() {
+		return (
+			<View style={styles.container}>
+				{/* 头部 */}
+				<View style={styles.headerViewStyle}>
+					<Text>Tab选项卡的切换</Text>
+				</View>
+				
+				{/* 选项卡 */}
+				<TabBarIOS
+					style={{width: width}}
+					barTintColor='black'
+					tintColor='purple'
+				>
+					{/* 第一块 */}
+					<TabBarIOS.Item
+//						systemIcon='home',
+						title="HOME"
+						badge='3'
+						selected={this.state.selectdTabBarItem == 'home'}
+						onPress={() => { this.setState({selectdTabBarItem: 'home'}) } }
+					>
+						<View　style={[styles.commonViewStyle, {backgroundColor: 'tomato'}]}>
+							<Text>首页</Text>
+						</View>
+					</TabBarIOS.Item>
+					
+					{/* 第二块 */}
+					<TabBarIOS.Item
+						systemIcon='bookmarks'
+						selected={this.state.selectdTabBarItem == 'bookmarks'}
+						onPress={() => { this.setState({selectdTabBarItem: 'bookmarks'}) } }
+					>	
+						<View　style={[styles.commonViewStyle, {backgroundColor: 'cyan'}]}>
+							<Text>第二页</Text>
+						</View>
+					</TabBarIOS.Item>
+					
+					{/* 第三块 */}
+					<TabBarIOS.Item
+						systemIcon='downloads'
+						selected={this.state.selectdTabBarItem == 'downloads'}
+						onPress={() => { this.setState({selectdTabBarItem: 'downloads'}) } }
+					>
+						<View　style={[styles.commonViewStyle, {backgroundColor: 'tan'}]}>
+							<Text>第三页</Text>
+						</View>
+					</TabBarIOS.Item>
+					
+					{/* 第四块 */}
+					<TabBarIOS.Item
+						systemIcon='serach'
+						selected={this.state.selectdTabBarItem == 'serach'}
+						onPress={() => { this.setState({selectdTabBarItem: 'serach'}) } }
+					>
+						<View　style={[styles.commonViewStyle, {backgroundColor: 'pink'}]}>
+							<Text>第四页</Text>
+						</View>
+					</TabBarIOS.Item>
+				</TabBarIOS>
+			</View>
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+	commonViewStyle: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	headerViewStyle: {
+		backgroundColor: '#eee',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 40
+	}
+});
+```
+
  
  

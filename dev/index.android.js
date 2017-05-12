@@ -283,7 +283,7 @@ AppRegistry.registerComponent('rn', () => rnShare);*/
 
 // 吸顶效果  *********************************************
 
-import Ceiling from './src/Ceiling';
+/*import Ceiling from './src/Ceiling';
 
 export default class rnCeiling extends Component {
 	render() {
@@ -296,5 +296,24 @@ export default class rnCeiling extends Component {
 const styles = StyleSheet.create({
 });
 
-AppRegistry.registerComponent('rn', () => rnCeiling);
+AppRegistry.registerComponent('rn', () => rnCeiling);*/
+
+
+
+// TabBarIOS  *********************************************
+
+import TabBar from './src/TabBar';
+
+export default class rnTabBar extends Component {
+	render() {
+		return (
+			<TabBar />
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+});
+
+AppRegistry.registerComponent('rn', () => rnTabBar);
 
