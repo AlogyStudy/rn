@@ -642,12 +642,35 @@ export default class Share extends Component {
 		);
 	}
 }
+
+
+const styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		width: width,
+		// 多行显示
+		flexWrap: 'wrap'
+	},
+	shareViewWrap: {
+		width: cellWH,
+		height: cellWH,
+		marginLeft: vMargin,
+		marginBottom: vHmargin,
+		
+		// 居中
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	titleView: {
+		lineHeight: 30
+	}
+});
 ```
 
 
 ## 吸顶效果
 
-实现滚动时每个section header会吸顶?
+如何实现滚动时每个section header会吸顶?
 一个方法，三个属性。
 `cloneWithRowsAndSecions()`: 将dataBlob(object), sectionIDs(array), rowIDs(array) 三个值传进去.
 
@@ -655,6 +678,10 @@ export default class Share extends Component {
 dataBlob的key值包含sectionID + rowID  (一个二维数组)
 `sectionIDs`: 用于标识每组section
 `rowIDs`: 描述每个section里的每行数据的位置及是否要渲染。
+
+
+`renderSectionHeader`: 渲染组,参数：`setionData` 组内容, `sectionID`组号
+`renderRow`: 渲染行，　参数：　`rowData`行内容, `sectionID`组ID, `rowID`行ID, `highlinghtRow`高亮行
 
 > 模拟对应的数据结构
 
