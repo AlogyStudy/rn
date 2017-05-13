@@ -998,6 +998,8 @@ const styles = StyleSheet.create({
 
 界面与界面之间的上下级关联
 
+> NavgatorIOS
+
 `NavgatorIOS`　包装了　UIKit的导航功能,　可以使用左划功能来返回到上一界面。
 
 **方法**  
@@ -1052,6 +1054,33 @@ pushToNewsDetail(rowData) {
 }
 ```
 
+> Navigator (过期，不适用)
+
+核心要素：
+navigator:用来管理所有界面对象的栈，称之为：`路由栈`或者`导航`
+route: 路由栈里的每一个对象，称之为`路由`,用来存储每一个页面组件以及一些需要传递给对应界面的props参数
+
+
+**属性**
+
+通用模板
+```
+reutrn (
+  <Navigator
+    initialRoute={{name: name, component: component}}
+    configureScene={() => {return Navigator.SceneConfigs.PushFromRight;}}
+    renderScene={(route, navigator) => {
+      let Component = route.component;
+      return <Component {...route.passProps} navigator={navigator} />
+    }}
+  />
+);
+```
+`initialRoute`: 初始化路由，需要在navigator栈底放置的路由，此时也是栈顶，因此是初始化整个App的首页.
+`configureScene`: 设置页面切换动画
+`renderScene`: 渲染当前路由场景， 渲染路由，回调方法里一个参数是当前路由route，另外一个是navigator路由栈
+
+
 ## WebView
 
 `WebView`加载网站
@@ -1098,4 +1127,10 @@ this.props.navigator.push({
 ```
 
 
-## 
+## Platform
+
+判断当前运行系统
+
+```
+Platform.OS === 'ios' ? 30 : 25
+```

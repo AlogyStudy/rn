@@ -9,30 +9,27 @@ import {
 	StyleSheet,
 	View,
 	Text,
-	TouchableOpacity,
+	TouchableOpacity
 } from 'react-native';
 
-import HomeDetails from './XMGHomeDetails';
+
 
 export default class Home extends Component {
 	static navigationOptions = {
-		title: '首页'
+		title: '详情页'
 	}
 	
-	// 跳转到二级界面
-	pushToDetails() {
-		/*this.props.navigator.push({
-			title: '',
-			component: HomeDetails,
-		});*/
+	pushToHome() {
+		//  返回首页
+//		this.props.navigator.pop();	
 	}
 	
 	render() {
 		return(
 			<View style={styles.container}>
-				<TouchableOpacity onPress={this.pushToDetails()}>
+				<TouchableOpacity onPress={() => {this.pushToHome()}}>
 			        <Text style={styles.welcome}>
-			          	首页
+			          	HomeDetials
 			        </Text>
 				</TouchableOpacity>
 		    </View>

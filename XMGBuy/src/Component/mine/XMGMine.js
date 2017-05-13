@@ -18,7 +18,7 @@ export default class My extends Component {
 		return(
 			<View style={styles.container}>
 		        <Text style={styles.welcome}>
-		          MY
+		          mine
 		        </Text>
 		    </View>
 		);
