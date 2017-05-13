@@ -858,6 +858,8 @@ const styles = StyleSheet.create({
 
 ## TabBarIOS
 
+界面与界面之间的平级关联
+
 TabBar和TabBarIOS.Item
 
 **TabBar属性**
@@ -991,5 +993,106 @@ const styles = StyleSheet.create({
 });
 ```
 
- 
- 
+
+## Navigator && NavgatorIOS
+
+界面与界面之间的上下级关联
+
+`NavgatorIOS`　包装了　UIKit的导航功能,　可以使用左划功能来返回到上一界面。
+
+**方法**  
+
+相当于操作栈.
+
+常用：
+`push(route)`　导航器跳转到一个新的路由
+`pop()` 回到上一页
+`popN(n)` 回到N页之前。当N=1的时候，效果和 pop()一样。
+`replace(route)` 替换当前页的路由，并立即加载新路由的视图。
+
+了解：
+`replacePrevious(route)`　替换上一页的路由/视图
+`replacePreviousAndPop(route)`替换上一页的路由/视图并且立刻切换回上一页
+`resetTo(route)` 替换最顶级的路由并且回到它
+
+**属性**
+
+`barTintColor` string 导航条的背景颜色
+`tintColor` 　string 设置导航条前景色
+
+`initalRoute` Navigator使用"路由"对象来包含要渲染的子视图，它们的属性，以及导航条配置。`push`和任何其它的导航函数的参数都是这样的路由对象。
+跳转路由的具体信息，　页面前后跳转的需要参数配置
+```
+{
+	component: function, // 路由到对应的版块（组件）
+	title: string, // 标题
+	passProps: object, // 传递的参数 , 往下一个页面传递的参数
+	backButtonIcon: Image.propTypes.source, // 返回按钮
+	backButtonTitle: string, // 返回按钮标题
+	leftButtonIcon: Image.propTypes.source,
+	leftButtonTitle: string,
+	onLeftButtonPress: function,
+	rightButtonIcon: Image.propTypes.source,
+	rightButtonTitle: string,
+	onRightButtonPress: function,
+	warpperStyle: [object Object]
+}
+```
+
+**新闻列表页跳转详情页**
+
+```
+pushToNewsDetail(rowData) {
+	// 通过　`this.props` 来操作
+	this.props.navigator.push({
+		title: '新闻详情', // title
+		component: XMGNewsDetail,  // 组件
+		passProps: {rowData}　// 携带参数
+	});
+}
+```
+
+## WebView
+
+`WebView`加载网站
+`srouce`,　加载,解析html
+`url`, 加载url,
+
+```
+var WebViewDemo = React.createClass({
+  render: function() {
+    return (
+      <View style={{flex:1}}>
+        <Text style={{height:40}}>简单的网页显示</Text>
+        <WebView style={styles.webview_style} 
+//        url={DEFAULT_URL}
+          source={{html: '', baseUrl: ''}}
+          startInLoadingState={true}
+          domStorageEnabled={true}
+          javaScriptEnabled={true}
+          >
+        </WebView>
+      </View>
+    );
+  },
+});
+```
+
+
+## 新闻项目
+
+1. 创建基础文件
+2. 设置`TabBarIOS`和　`NavigatorIOS`
+3. 请求数据　fecth　
+4. 处理数据
+5. 渲染视图　＜LisrView /> <ScrollView />
+6. 完成列表和焦点图
+7. 处理跳转页面
+```
+//　跳转页面
+this.props.navigator.push({
+	component: NewsDetails, // 跳转组件
+	title: rowData.title,　//　title
+	passProps: rowData // 传递参数
+});
+```
