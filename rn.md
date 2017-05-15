@@ -68,6 +68,7 @@ Demesions 模块
 	alignItems: 'center'
 }
 
+1dp = 2px
 
 ## Image组件
 
@@ -244,7 +245,7 @@ render() {
 
 ## ScrollView
 
-焦点图，引导页.
+焦点图，引导页，滑动的列表
 
 样式继承自 View
 

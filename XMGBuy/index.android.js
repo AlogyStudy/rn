@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import App from './src/App';
+// import Launch from './src/Component/common/XMGLaunchImage';
 
 export default class XMGBuy extends Component {
   render() {
